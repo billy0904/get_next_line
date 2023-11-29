@@ -7,6 +7,6 @@
 #define BUFFER_SIZE 1024
 #endif
 
-int get_next_line(int const fd, char **line);
+char *get_next_line(int fd);
 
 #endif
