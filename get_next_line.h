@@ -21,6 +21,7 @@
 # endif
 
 size_t	ft_strlen(const char *s);
+char	*ft_strdup(const char *s1);
 char	*get_next_line(int fd);
 
 #endif
