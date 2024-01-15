@@ -22,6 +22,14 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
+char	*ft_free(char **ptr)
+{
+	if (*ptr)
+		free(*ptr);
+	*ptr = 0;
+	return (NULL);
+}
+
 char	*ft_strdup(const char *s1)
 {
 	int		len;
