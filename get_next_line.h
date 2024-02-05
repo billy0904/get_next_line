@@ -15,6 +15,7 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+# include <fcntl.h>
 
 # ifndef BUFF_SIZE
 #  define BUFFER_SIZE 1024
@@ -24,6 +25,7 @@ size_t	ft_strlen(const char *s);
 char	*ft_free(char **ptr);
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char *s1, char *s2, char **ptr);
+void	*ft_memcpy(void *dst, void *src, size_t n);
 char	*get_next_line(int fd);
 
 #endif
