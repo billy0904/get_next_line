@@ -17,7 +17,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 
-# ifndef BUFF_SIZE
+# ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
 # endif
 
