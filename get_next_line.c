@@ -12,10 +12,23 @@
 
 #include "get_next_line.h"
 
-char	*split(char *str)
+char	*split(char *str, char *save)
 {
 	int		i;
-	char	*str;
+	char	*res;
+	char	*tmp;
+
+	if (!str)
+		return (NULL);
+	tmp = str;
+	if (i < 0)
+	{
+		*save = NULL;
+		return (str);
+	}
+
+	free(tmp);
+	return (res);
 
 	i = 0;
 	while(str[i] == "\n")
