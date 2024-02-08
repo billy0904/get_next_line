@@ -48,6 +48,12 @@ char	*get_next_line(int fd)
 	while (1)
 	{
 		line = read(fd, buffer, BUFFER_SIZE);
+		if (line == 0)
+			return (save);
+		else if (line == -1)
+		{
+			asdf
+		}
 	}
 	return (line);
 }
