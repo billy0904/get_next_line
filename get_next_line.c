@@ -53,20 +53,41 @@ char	*split_save(char *str, char *save)
 	}
 }
 
-char	*get_next_line(int fd)
+char	*return_line(int fd)
 {
-	char		*line;
-	char		*buffer;
+	char	*line;
+	char	*buffer;
+
+}
+
+char	*get_next_line(int fd) //byte 크기가 잘 설정되었는지
+{
+
+	int		byte;
+	char	*line;
+	char	*buffer;
 	static char	*save;
 
 	if (enter_exists(save) != -1)
 		return (save에서 개행까지);
 	while (1)
 	{
-		line = read(fd, buffer, BUFFER_SIZE);
-		if (line == 0)
-			return (save에서 개행까지);
-		else if (line == -1)
+		byte = read(fd, buffer, BUFFER_SIZE);
+		if (byte == 0)
+			return(return_line(남아있는 읽어온 애들));
+		else if (byte >= 1)
+		{
+			if (enter_exists(buffer) == -1)
+			{
+				line = buffer; //아직 리턴 전임
+			}
+			else //개행이 있을 경우
+			{
+
+			}
+		}
+
+		else if (byte == -1)
 		{
 			asdf
 		}
