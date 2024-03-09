@@ -12,12 +12,26 @@
 
 #include "get_next_line.h"
 
-char	*split(char *str, char *save)
+int enter_exists(char *str)
+{
+	int i;
+	i = 0;
+	while (str[i] != '\n')
+	{
+		if (str[i] == '\0')
+			return (-1);
+		i++;
+	}
+	return(i);
+}
+
+char	*split_save(char *str, char *save)
 {
 	int		i;
 	char	*res;
 	char	*tmp;
 
+	i = 0;
 	if (!str)
 		return (NULL);
 	tmp = str;
@@ -26,6 +40,8 @@ char	*split(char *str, char *save)
 		*save = NULL;
 		return (str);
 	}
+	res = ft_substr(str, 0, i + 1);
+	*save = ft_substr(str, i + 1, howlong(str));
 
 	free(tmp);
 	return (res);
@@ -43,13 +59,13 @@ char	*get_next_line(int fd)
 	char		*buffer;
 	static char	*save;
 
-	if (save 안에 내용이 있을 경우)
-		return (save);
+	if (enter_exists(save) != -1)
+		return (save에서 개행까지);
 	while (1)
 	{
 		line = read(fd, buffer, BUFFER_SIZE);
 		if (line == 0)
-			return (save);
+			return (save에서 개행까지);
 		else if (line == -1)
 		{
 			asdf
