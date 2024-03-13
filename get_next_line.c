@@ -25,70 +25,64 @@ int enter_exists(char *str)
 	return (i);
 }
 
-char *split_line(char *str, char *save)
+char *read_line(int fd, char **save)
 {
-	int i;
-	char *res;
-	char *tmp;
-
-	i = 0;
-	if (!str)
-		return (NULL);
-	tmp = str;
-	if (i < 0)
-	{
-		*save = NULL;
-		return (str);
-	}
-	res = ft_substr(str, 0, i + 1);
-	*save = ft_substr(str, i + 1, howlong(str));
-
-	free(tmp);
-	return (res);
-
-	i = 0;
-	while (str[i] == "\n")
-	{
-		i++;
-	}
-}
-
-char *return_line(int fd)
-{
-	char *line;
-	char *buffer;
-}
-
-char *get_next_line(int fd) // byte 크기가 잘 설정되었는지
-{
-
-	int byte;
-	char *line;
 	char buffer[BUFFER_SIZE + 1];
-	static char *save;
+	int byte;
 
-	if (enter_exists(save) != -1)
-		return (save에서 개행까지);
-	while (1)
+	while (enter_exists(*save) != -1)
 	{
+		if (!*save)
+			return (NULL);
 		byte = read(fd, buffer, BUFFER_SIZE);
 		if (byte == 0)
-			return (return_line(남아있는 읽어온 애들));
-		else if (byte >= 1)
-		{
-			if (enter_exists(buffer) == -1)
-			{
-				line = buffer; // 아직 리턴 전임
-			}
-			else // 개행이 있을 경우
-			{
-			}
-		}
-
+			return (*save);
 		else if (byte == -1)
-		{
-			asdf
-		}
+			return (ft_free(save));
+		buffer[byte] = '\0';
+		*save = ft_strjoin(*save, buffer, save);
 	}
+	return (*save);
+}
+
+char *return_line(char *save)
+{
+	char *line;
+	int i;
+
+	i = 0;
+	if (!save[i])
+		return (NULL);
+	if (enter_exists(save) != -1)
+		i = enter_exists(save) + 1;
+	line = (char *)malloc(sizeof(char) * (i + 1));
+	if (!line)
+		return (NULL);
+	i = 0;
+	while (save[i] && save[i] != '\n')
+	{
+		line[i] = save[i];
+		i++;
+	}
+	if (save[i] == '\n')
+		line[i] = save[i];
+	i++;
+	line[i] = '\0';
+	return (line);
+}
+
+char *get_next_line(int fd)
+{
+	char *line;
+	static char *save;
+
+	if (BUFFER_SIZE < 1 || fd < 0)
+		return (NULL);
+	save = read_line(fd, &save);
+	if (save == NULL)
+		return (NULL);
+	line = return_line(save);
+	if (!line)
+		return (ft_free(&save));
 	return (line);
 }
