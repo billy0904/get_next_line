@@ -12,9 +12,9 @@
 
 #include "get_next_line.h"
 
-size_t	howlong(const char *s)
+size_t howlong(const char *s)
 {
-	size_t	i;
+	size_t i;
 
 	i = 0;
 	while (s[i])
@@ -22,7 +22,7 @@ size_t	howlong(const char *s)
 	return (i);
 }
 
-char	*ft_free(char **ptr)
+char *ft_free(char **ptr)
 {
 	if (*ptr)
 		free(*ptr);
@@ -30,11 +30,39 @@ char	*ft_free(char **ptr)
 	return (NULL);
 }
 
-char	*ft_strdup(const char *s1)
+char *ft_strjoin(int size, char **strs, char *sep)
 {
-	int		len;
-	int		i;
-	char	*dup;
+	int i;
+	int len;
+	char *arr;
+
+	if (size == 0)
+	{
+		arr = (char *)malloc(sizeof(char) * 1);
+		arr[0] = 0;
+		return (arr);
+	}
+	len = sslen(size, strs) + (howlong(sep) * (size - 1)) + 1;
+	arr = (char *)malloc(sizeof(char) * len);
+	i = 0;
+	if (arr == 0)
+		return (0);
+	arr[0] = 0;
+	while (i < size - 1)
+	{
+		scat(arr, strs[i]);
+		scat(arr, sep);
+		i++;
+	}
+	scat(arr, strs[i]);
+	return (arr);
+}
+
+char *ft_strdup(const char *s1)
+{
+	int len;
+	int i;
+	char *dup;
 
 	i = 0;
 	len = howlong(s1);
@@ -48,25 +76,4 @@ char	*ft_strdup(const char *s1)
 	}
 	dup[i] = '\0';
 	return (dup);
-}
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	char	*str;
-
-	if (howlong(s) <= start)
-	{
-		str = (char *)malloc(1);
-		if (!str)
-			return (0);
-		*str = 0;
-		return (str);
-	}
-	if (len > howlong(s) - start)
-		len = howlong(s) - start;
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (0);
-	ft_strlcpy(str, &s[start], len + 1);
-	return (str);
 }

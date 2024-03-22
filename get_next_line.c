@@ -45,6 +45,21 @@ char *read_line(int fd, char **save)
 	return (*save);
 }
 
+char *initialize_save(char **save)
+{
+	char *new;
+	char *enter;
+
+	enter = enter_exists(*save);
+	if (enter == NULL)
+		return (ft_free(save));
+	new = ft_strdup(enter + 1);
+	if (!new)
+		return (ft_free(save));
+	ft_free(save);
+	return (new);
+}
+
 char *return_line(char *save)
 {
 	char *line;
@@ -84,5 +99,6 @@ char *get_next_line(int fd)
 	line = return_line(save);
 	if (!line)
 		return (ft_free(&save));
+	save = initialize_save(&save);
 	return (line);
 }
