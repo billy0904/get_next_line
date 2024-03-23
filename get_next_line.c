@@ -12,64 +12,61 @@
 
 #include "get_next_line.h"
 
-int enter_exists(char *str)
+char	*enter_exists(char *str)
 {
-	int i;
+	int	i;
+
 	i = 0;
-	while (str[i] != '\n')
+	if (!str)
+		return (NULL);
+	while (str[i])
 	{
-		if (str[i] == '\0')
-			return (-1);
+		if (str[i] == '\n')
+			return (&str[i]);
 		i++;
 	}
-	return (i);
+	return (NULL);
 }
 
-char *read_line(int fd, char **save)
+char	*read_line(int fd, char **save)
 {
-	char buffer[BUFFER_SIZE + 1];
-	int byte;
+	char	buffer[BUFFER_SIZE + 1];
+	int		byte;
 
-	while (enter_exists(*save) != -1)
+	while (enter_exists(*save) == NULL)
 	{
-		if (!*save)
-			return (NULL);
 		byte = read(fd, buffer, BUFFER_SIZE);
 		if (byte == 0)
 			return (*save);
 		else if (byte == -1)
-			return (ft_free(save));
+			return (free_save(save));
 		buffer[byte] = '\0';
 		*save = ft_strjoin(*save, buffer, save);
+		if (!*save)
+			return (NULL);
 	}
 	return (*save);
 }
 
-char *initialize_save(char **save)
+char	*initialize_save(char **save)
 {
-	char *new;
-	char *enter;
+	char	*new;
+	char	*enter;
 
 	enter = enter_exists(*save);
 	if (enter == NULL)
-		return (ft_free(save));
+		return (free_save(save));
 	new = ft_strdup(enter + 1);
 	if (!new)
-		return (ft_free(save));
-	ft_free(save);
+		return (free_save(save));
+	free_save(save);
 	return (new);
 }
 
-char *return_line(char *save)
+char	*return_line(char *save, int i)
 {
-	char *line;
-	int i;
+	char	*line;
 
-	i = 0;
-	if (!save[i])
-		return (NULL);
-	if (enter_exists(save) != -1)
-		i = enter_exists(save) + 1;
 	line = (char *)malloc(sizeof(char) * (i + 1));
 	if (!line)
 		return (NULL);
@@ -80,25 +77,33 @@ char *return_line(char *save)
 		i++;
 	}
 	if (save[i] == '\n')
+	{
 		line[i] = save[i];
-	i++;
+		i++;
+	}
 	line[i] = '\0';
 	return (line);
 }
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
-	char *line;
-	static char *save;
+	char		*line;
+	static char	*save;
+	int			i;
 
+	i = 0;
 	if (BUFFER_SIZE < 1 || fd < 0)
 		return (NULL);
 	save = read_line(fd, &save);
-	if (save == NULL)
+	if (!save)
 		return (NULL);
-	line = return_line(save);
+	while (save[i] && save[i] != '\n')
+		i++;
+	if (save[i] == '\n')
+		i++;
+	line = return_line(save, i);
 	if (!line)
-		return (ft_free(&save));
+		return (free_save(&save));
 	save = initialize_save(&save);
 	return (line);
 }

@@ -12,9 +12,9 @@
 
 #include "get_next_line.h"
 
-size_t howlong(const char *s)
+size_t	howlong(const char *s)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (s[i])
@@ -22,7 +22,7 @@ size_t howlong(const char *s)
 	return (i);
 }
 
-char *ft_free(char **ptr)
+char	*free_save(char **ptr)
 {
 	if (*ptr)
 		free(*ptr);
@@ -30,43 +30,63 @@ char *ft_free(char **ptr)
 	return (NULL);
 }
 
-char *ft_strjoin(int size, char **strs, char *sep)
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
-	int i;
-	int len;
-	char *arr;
+	unsigned char		*d;
+	const unsigned char	*s;
+	size_t				len;
 
-	if (size == 0)
-	{
-		arr = (char *)malloc(sizeof(char) * 1);
-		arr[0] = 0;
-		return (arr);
-	}
-	len = sslen(size, strs) + (howlong(sep) * (size - 1)) + 1;
-	arr = (char *)malloc(sizeof(char) * len);
-	i = 0;
-	if (arr == 0)
+	d = (unsigned char *)dst;
+	s = (const unsigned char *)src;
+	len = 0;
+	if (dst && !src)
 		return (0);
-	arr[0] = 0;
-	while (i < size - 1)
+	if (size == 0)
+		return (howlong(src));
+	while (src[len] && len < size - 1)
 	{
-		scat(arr, strs[i]);
-		scat(arr, sep);
-		i++;
+		d[len] = s[len];
+		len++;
 	}
-	scat(arr, strs[i]);
-	return (arr);
+	d[len] = '\0';
+	while (s[len] != '\0')
+		len++;
+	return (len);
 }
 
-char *ft_strdup(const char *s1)
+char	*ft_strjoin(char *str1, char *str2, char **ptr)
 {
-	int len;
-	int i;
-	char *dup;
+	size_t		len;
+	char		*result;
+
+	if (!(str1 || str2))
+		return (NULL);
+	else if (!str1)
+		return (ft_strdup(str2));
+	len = howlong(str1) + howlong(str2) + 1;
+	result = (char *)malloc(sizeof(char) * len);
+	if (!result)
+	{
+		free(*ptr);
+		return (NULL);
+	}
+	ft_strlcpy(result, str1, howlong(str1) + 1);
+	ft_strlcpy(result + howlong(str1), str2, howlong(str2) + 1);
+	free(*ptr);
+	return (result);
+}
+
+char	*ft_strdup(const char *s1)
+{
+	int		len;
+	int		i;
+	char	*dup;
 
 	i = 0;
-	len = howlong(s1);
-	dup = (char *)malloc(sizeof(char) * (len + 1));
+	len = howlong(s1) + 1;
+	if (len == 1)
+		return (NULL);
+	dup = (char *)malloc(sizeof(char) * len);
 	if (!dup)
 		return (0);
 	while (s1[i])
